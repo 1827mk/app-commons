@@ -17,11 +17,12 @@ type Config struct {
 }
 
 type Database struct {
-	Host     string `yaml:"host"`
-	Port     int    `yaml:"port"`
-	User     string `yaml:"user"`
-	Password string `yaml:"password"`
-	DBName   string `yaml:"dbname"`
+	Host     string   `yaml:"host"`
+	Port     int      `yaml:"port"`
+	User     string   `yaml:"user"`
+	Password string   `yaml:"password"`
+	DBName   string   `yaml:"dbname"`
+	Scripts  []string `yaml:"scripts"`
 }
 
 type RedisConfig struct {
