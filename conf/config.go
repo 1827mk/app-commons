@@ -8,12 +8,34 @@ import (
 	"github.com/spf13/viper"
 )
 
+// Auth configuration
+type AuthConfig struct {
+	TokenExpiry    int `yaml:"tokenExpiry"`    // Token expiry in hours
+	RefreshExpiry  int `yaml:"refreshExpiry"`  // Refresh token expiry in days
+	MaxDevices     int `yaml:"maxDevices"`     // Maximum devices per user
+	SessionTimeout int `yaml:"sessionTimeout"` // Session timeout in minutes
+	RateLimit      struct {
+		LoginAttempts int `yaml:"loginAttempts"` // Max login attempts
+		WindowMinutes int `yaml:"windowMinutes"` // Time window for rate limiting
+	} `yaml:"rateLimit"`
+}
+
+// Enhanced JWT configuration
+type JWTConfig struct {
+	Secret        string `yaml:"secret"`
+	AccessExpiry  int    `yaml:"accessExpiry"`  // Access token expiry in minutes
+	RefreshExpiry int    `yaml:"refreshExpiry"` // Refresh token expiry in days
+	Issuer        string `yaml:"issuer"`
+	Audience      string `yaml:"audience"`
+}
+
 type Config struct {
 	AppName  string       `yaml:"appname"`
 	Server   ServerConfig `yaml:"server"`
 	Database Database     `yaml:"database"`
 	Redis    RedisConfig  `yaml:"redis"`
 	JWT      JWTConfig    `yaml:"jwt"`
+	Auth     AuthConfig   `yaml:"auth"`
 }
 
 type Database struct {
@@ -36,10 +58,6 @@ type ServerConfig struct {
 	ReadTimeout  int  `yaml:"readtimeout"`
 	WriteTimeout int  `yaml:"writetimeout"`
 	RateLimit    bool `yaml:"ratelimit"`
-}
-
-type JWTConfig struct {
-	Secret string `yaml:"secret"`
 }
 
 func LoadConfig(configPath string) (*Config, error) {
